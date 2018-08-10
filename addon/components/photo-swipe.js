@@ -1,21 +1,20 @@
+import Component from "@ember/component";
+import { run } from '@ember/runloop';
 /* global PhotoSwipe */
 /* global PhotoSwipeUI_Default */
 
-import Em from 'ember';
 
-var run = Em.run;
 
-export default Em.Component.extend({
-
-  onInsert: Em.on('didInsertElement', function() {
-
-    Em.run.scheduleOnce('afterRender', this, function() {
-      this.set('pswpEl', this.$('.pswp')[0]);
-      this.set('pswpTheme', PhotoSwipeUI_Default);
+export default Component.extend({
+  didInsertElement() {
+    this._super(...arguments);
+    run.scheduleOnce("afterRender", this, function() {
+      this.set("pswpEl", this.$(".pswp")[0]);
+      this.set("pswpTheme", PhotoSwipeUI_Default);
 
       this._buildOptions();
 
-      if (this.get('items')) {
+      if (this.get("items")) {
         return this._initItemGallery();
       }
 
@@ -30,7 +29,7 @@ export default Em.Component.extend({
        * END DEPRECATED
        */
     });
-  }),
+  },
 
   _buildOptions: function(getThumbBoundsFn) {
      var reqOpts = {
@@ -46,28 +45,31 @@ export default Em.Component.extend({
   },
 
   _initItemGallery: function() {
-    this.set('gallery', new PhotoSwipe(
-      this.get('pswpEl'),
-      this.get('pswpTheme'),
-      this.get('items'),
-      this.get('options')
-    ));
-    if (this.get('reinit')) {
-      this.sendAction('reinit', this.get('gallery'));
+    this.set(
+      "gallery",
+      new PhotoSwipe(
+        this.get("pswpEl"),
+        this.get("pswpTheme"),
+        this.get("items"),
+        this.get("options")
+      )
+    );
+    if (this.get("reinit")) {
+      this.sendAction("reinit", this.get("gallery"));
     }
     this._reInitOnClose();
   },
 
   _reInitOnClose: function() {
     var component = this;
-    this.get('gallery').listen('close', function() {
+    this.get("gallery").listen("close", function() {
       run.next(function() {
         component._initItemGallery();
       });
     });
   },
 
-  itemObserver: Em.observer('items', function(){
+  itemObserver: Em.observer("items", function() {
     var component = this;
     component._initItemGallery();
   }),
@@ -109,7 +111,7 @@ export default Em.Component.extend({
    */
 
   _getBounds: function(i) {
-    var img      = this.$('img').get(i),
+    var img = this.$("img").get(i),
         position = this.$(img).position(),
         width    = this.$(img).width();
     return {x: position.left, y: position.top, w: width};
@@ -119,17 +121,17 @@ export default Em.Component.extend({
     launchGallery(item) {
       this._buildOptions(this._getBounds.bind(this));
       if (item !== undefined) {
-        var index = this.get('items').indexOf(item);
-        this.set('options.index', index);
+        var index = this.get("items").indexOf(item);
+        this.set("options.index", index);
       }
       var pSwipe = new PhotoSwipe(
-        this.get('pswpEl'),
-        this.get('pswpTheme'),
-        this.get('items'),
-        this.get('options')
+        this.get("pswpEl"),
+        this.get("pswpTheme"),
+        this.get("items"),
+        this.get("options")
       );
-      this.set('gallery', pSwipe);
-      this.get('gallery').init();
+      this.set("gallery", pSwipe);
+      this.get("gallery").init();
     }
   },
 
