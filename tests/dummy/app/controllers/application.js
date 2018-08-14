@@ -53,5 +53,9 @@ export default Ember.Controller.extend({
 
   psTwoOpts: {
     hideShare: true
+  },
+
+  psThreeOpts: {
+    destination:'destination'
   }
 });

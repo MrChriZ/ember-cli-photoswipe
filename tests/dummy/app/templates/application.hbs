@@ -1,3 +1,5 @@
+<div id="destination"></div>
+
 <h2 id="title">Photoswipe Examples</h2>
 
 <!-- example 1 -->
@@ -16,3 +18,14 @@
     <img class="thumb" src={{image.src}} alt={{image.title}}>
 
 {{/photo-swipe}}
+
+<br>
+<!-- example 3 - with destination -->
+<h3>Example with destination</h3>
+
+{{#photo-swipe options=psThreeOpts items=items as |image|}}
+
+    <img class="thumb" src={{image.src}} alt={{image.title}}>
+
+{{/photo-swipe}}
+
