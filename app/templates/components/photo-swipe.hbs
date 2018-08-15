@@ -15,12 +15,12 @@
   {{/if}}
 {{/if}}
 {{#unless options.destination}}
-  {{pswp-element}}
+  {{pswp-element options=options}}
 {{/unless}}
 {{#if options.destination}}
   <div>
     {{#ember-wormhole to=options.destination}}
-      {{pswp-element}}
+      {{pswp-element options=options}}
     {{/ember-wormhole}}
   </div>
 {{/if}}
