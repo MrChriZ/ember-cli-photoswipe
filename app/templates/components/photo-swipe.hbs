@@ -19,8 +19,8 @@
 {{/unless}}
 {{#if options.destination}}
   <div>
-    {{#ember-wormhole to=options.destination}}
+    {{#in-element _container}}
       {{pswp-element options=options}}
-    {{/ember-wormhole}}
+    {{/in-element}}
   </div>
 {{/if}}

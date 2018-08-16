@@ -5,6 +5,12 @@ import Ember from "ember";
 /* global PhotoSwipeUI_Default */
 
 export default Component.extend({
+  container: "",
+  init() {
+    this._super(...arguments);
+    Ember.defineProperty(this, '_container', Ember.computed(() => self.document.querySelectorAll(this.get('options.destination'))[0]));
+    
+  },
   didInsertElement() {
     this._super(...arguments);
 
@@ -12,7 +18,7 @@ export default Component.extend({
       this._buildOptions();
 
       if (this.get("options.destination")) {
-        let destinationElement = "#" + this.get("options.destination") + " .pswp";
+        let destinationElement = this.get("options.destination") + " .pswp";
         this.set("pswpEl", Ember.$(destinationElement)[0]);
       } else {
         this.set("pswpEl", this.$(".pswp")[0]);

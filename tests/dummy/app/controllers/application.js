@@ -56,6 +56,6 @@ export default Ember.Controller.extend({
   },
 
   psThreeOpts: {
-    destination:'destination'
+    destination:'#destination'
   }
 });
