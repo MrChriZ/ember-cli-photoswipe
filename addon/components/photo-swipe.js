@@ -14,16 +14,18 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
 
+    if (this.get("options.destination")) {
+      let destinationElement = this.get("options.destination") + " .pswp";
+      this.set("pswpEl", Ember.$(destinationElement)[0]);
+    } else {
+      this.set("pswpEl", this.$(".pswp")[0]);
+    }
+
+
     run.scheduleOnce("afterRender", this, function() {
       this._buildOptions();
 
-      if (this.get("options.destination")) {
-        let destinationElement = this.get("options.destination") + " .pswp";
-        this.set("pswpEl", Ember.$(destinationElement)[0]);
-      } else {
-        this.set("pswpEl", this.$(".pswp")[0]);
-      }
-
+    
       this.set("pswpTheme", PhotoSwipeUI_Default);
 
       if (this.get("items")) {
