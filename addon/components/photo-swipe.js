@@ -8,24 +8,28 @@ export default Component.extend({
   container: "",
   init() {
     this._super(...arguments);
-    Ember.defineProperty(this, '_container', Ember.computed(() => self.document.querySelectorAll(this.get('options.destination'))[0]));
-    
+    Ember.defineProperty(
+      this,
+      "_container",
+      Ember.computed(
+        () => self.document.querySelectorAll(this.get("options.destination"))[0]
+      )
+    );
   },
   didInsertElement() {
     this._super(...arguments);
 
-    if (this.get("options.destination")) {
-      let destinationElement = this.get("options.destination") + " .pswp";
-      this.set("pswpEl", Ember.$(destinationElement)[0]);
-    } else {
-      this.set("pswpEl", this.$(".pswp")[0]);
-    }
-
-
     run.scheduleOnce("afterRender", this, function() {
       this._buildOptions();
 
-    
+      if (this.get("options.destination")) {
+        let destinationElementSelector = this.get("options.destination") + " .pswp";
+        let destinationJQElement = Ember.$(destinationElementSelector);
+        this.set("pswpEl",destinationJQElement[destinationJQElement.length - 1]);
+      } else {
+        this.set("pswpEl", this.$(".pswp")[0]);
+      }
+
       this.set("pswpTheme", PhotoSwipeUI_Default);
 
       if (this.get("items")) {
