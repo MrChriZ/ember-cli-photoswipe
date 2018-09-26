@@ -5,6 +5,7 @@ var fs   = require('fs');
 var path = require('path');
 var Funnel = require('broccoli-funnel');
 const mergeTrees = require('broccoli-merge-trees');
+var fastbootTransform = require('fastboot-transform');
 
 module.exports = {
   name: 'ember-cli-photoswipe',
@@ -14,17 +15,14 @@ module.exports = {
     this.app  = app;
     var psDir ='vendor/ember-photoswipe/dist';
     
-    if (!process.env.EMBER_CLI_FASTBOOT) {
-      app.import(psDir + '/photoswipe.css');
-      app.import(psDir + '/default-skin/default-skin.css');
-      app.import(psDir + '/photoswipe.js');
-      app.import(psDir + '/photoswipe-ui-default.min.js');
-      
-    }
-  },
+    app.import(psDir + '/photoswipe.css');
+    app.import(psDir + '/default-skin/default-skin.css');
+    app.import(psDir + '/photoswipe.js');
+    app.import(psDir + '/photoswipe-ui-default.min.js');
+    },
 
   treeForPublic: function() {    
-    // var psDir ='vendor/ember-photoswipe/dist';
+    
     var psDir =path.dirname(require.resolve('photoswipe/dist/photoswipe.js'));
     var svgPath = path.join(psDir, 'default-skin');
     
@@ -42,8 +40,13 @@ module.exports = {
     let include = [];   
     include.push('dist/*.css');
     include.push('dist/*.js');      
-    include.push('dist/default-skin/*.*');      
-    let tree= new Funnel(`node_modules/photoswipe/`, { destDir: 'ember-photoswipe', include: include });         
+    include.push('dist/default-skin/*.*');
+    const assetDir = path.join(
+      this.project.root,
+      "node_modules",
+      "photoswipe"
+    ); 
+    let tree= fastbootTransform(new Funnel(assetDir, { destDir: 'ember-photoswipe', include: include }));         
     let trees=[];
     trees.push(tree);
     return this._super(mergeTrees(trees, { overwrite: true }));

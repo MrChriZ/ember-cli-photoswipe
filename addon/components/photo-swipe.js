@@ -1,20 +1,17 @@
 import Component from "@ember/component";
 import { run } from "@ember/runloop";
 import Ember from "ember";
-/* global PhotoSwipe */
-/* global PhotoSwipeUI_Default */
+import { defineProperty } from '@ember/object';
+import { computed } from '@ember/object';
 
 export default Component.extend({
   container: "",
   init() {
     this._super(...arguments);
-    Ember.defineProperty(
+    defineProperty(
       this,
       "_container",
-      Ember.computed(
-        () => self.document.querySelectorAll(this.get("options.destination"))[0]
-      )
-    );
+      computed(        () => self.document.querySelectorAll(this.get("options.destination"))[0]));
   },
   didInsertElement() {
     this._super(...arguments);
